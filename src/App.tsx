@@ -1,14 +1,8 @@
 import './App.css'
+import FirebaseTest from './FirebaseTest'
 
 function App() {
-
-  return (
-    <>
-      <div>
-        main
-      </div>
-    </>
-  )
+  return <FirebaseTest />
 }
 
 export default App
