@@ -30,27 +30,34 @@ export const restaurantService = {
   },
 
   async bulkCacheRestaurants(restaurants: Restaurant[]): Promise<number> {
-    const batch = writeBatch(db);
     let count = 0;
+    const batchSize = 500;
     
-    for (const restaurant of restaurants) {
-      const existing = await this.findByExternalId(restaurant.externalId || restaurant.id);
-      if (!existing) {
-        const docRef = doc(collection(db, COLLECTION_NAME));
-        batch.set(docRef, {
-          ...restaurant,
-          cachedAt: Timestamp.now()
-        });
-        count++;
-        
-        if (count % 500 === 0) {
-          await batch.commit();
+    for (let i = 0; i < restaurants.length; i += batchSize) {
+      const batch = writeBatch(db);
+      const chunk = restaurants.slice(i, i + batchSize);
+      
+      for (const restaurant of chunk) {
+        const existing = await this.findByExternalId(restaurant.externalId || restaurant.id);
+        if (!existing) {
+          const docRef = doc(collection(db, COLLECTION_NAME));
+          batch.set(docRef, {
+            ...restaurant,
+            cachedAt: Timestamp.now()
+          });
+          count++;
         }
       }
-    }
-    
-    if (count % 500 !== 0) {
-      await batch.commit();
+      
+      if (count > 0) {
+        try {
+          await batch.commit();
+          console.log(`💾 ${count}개 저장 완료 (배치 ${Math.floor(i / batchSize) + 1})`);
+        } catch (error) {
+          console.error('배치 저장 실패:', error);
+          throw error;
+        }
+      }
     }
     
     return count;
