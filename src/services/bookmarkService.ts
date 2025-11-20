@@ -28,6 +28,11 @@ export const bookmarkService = {
     return docRef.id;
   },
 
+  // Alias for compatibility
+  async createBookmarkGroup(data: { userId: string; groupName: string; createdAt: Date; updatedAt: Date }): Promise<string> {
+    return this.createGroup(data.userId, data.groupName);
+  },
+
   async getGroupsByUserId(userId: string): Promise<BookmarkGroup[]> {
     const q = query(
       collection(db, GROUP_COLLECTION),
@@ -41,6 +46,11 @@ export const bookmarkService = {
       createdAt: doc.data().createdAt.toDate(),
       updatedAt: doc.data().updatedAt.toDate()
     } as BookmarkGroup));
+  },
+
+  // Alias for compatibility
+  async getBookmarkGroups(userId: string): Promise<BookmarkGroup[]> {
+    return this.getGroupsByUserId(userId);
   },
 
   async updateGroupName(groupId: string, newName: string): Promise<void> {
@@ -65,9 +75,13 @@ export const bookmarkService = {
     await deleteDoc(groupRef);
   },
 
-  async addBookmark(bookmark: Omit<Bookmark, 'id' | 'createdAt'>): Promise<string> {
+  async addBookmark(bookmark: { userId: string; groupId: string; restaurantId: string; restaurantName: string; restaurantAddress: string; createdAt: Date }): Promise<string> {
     const docRef = await addDoc(collection(db, BOOKMARK_COLLECTION), {
-      ...bookmark,
+      userId: bookmark.userId,
+      groupId: bookmark.groupId,
+      restaurantId: bookmark.restaurantId,
+      restaurantName: bookmark.restaurantName,
+      restaurantAddress: bookmark.restaurantAddress,
       createdAt: Timestamp.now()
     });
     return docRef.id;

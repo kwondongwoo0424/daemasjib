@@ -18,9 +18,12 @@ export const useBookmarkGroups = (userId: string | undefined) => {
 
     try {
       setLoading(true);
+      console.log('📚 그룹 로딩 시작, userId:', userId);
       const data = await bookmarkService.getGroupsByUserId(userId);
+      console.log('✅ 로딩된 그룹:', data);
       setGroups(data);
     } catch (err: any) {
+      console.error('❌ 그룹 로딩 에러:', err);
       setError(err.message);
     } finally {
       setLoading(false);

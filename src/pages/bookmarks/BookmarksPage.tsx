@@ -15,6 +15,13 @@ export const BookmarksPage = () => {
     if (!loading && !user) {
       navigate('/auth', { replace: true });
     }
+    
+    // 디버깅: 로그인 상태 확인
+    if (user) {
+      console.log('✅ 로그인됨:', user.uid, user.email);
+    } else {
+      console.log('❌ 로그인 안 됨');
+    }
   }, [user, loading, navigate]);
 
   if (loading || !user) {

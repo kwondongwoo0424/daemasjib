@@ -82,7 +82,7 @@ export const BookmarkGroupList = ({ userId, onSelectGroup }: BookmarkGroupListPr
               onClick={() => onSelectGroup?.(group.id!)}
             >
               <div className="card-body">
-                <h3 className="card-title">{group.name}</h3>
+                <h3 className="card-title">{group.groupName}</h3>
                 <p className="text-sm text-base-content/60">
                   북마크 {group.bookmarkCount || 0}개
                 </p>

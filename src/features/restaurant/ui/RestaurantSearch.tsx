@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRestaurants } from '../model/useRestaurants';
 import { useAuth } from '../../auth';
 import { visitService } from '../../../services/visitService';
+import { bookmarkService } from '../../../services/bookmarkService';
 import type { Restaurant } from '../../../types';
+import type { BookmarkGroup } from '../../../types';
 
 interface RestaurantSearchProps {
   onSelect?: (restaurant: Restaurant) => void;
@@ -13,10 +15,32 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showVisitModal, setShowVisitModal] = useState(false);
+  const [showBookmarkModal, setShowBookmarkModal] = useState(false);
   const [visitData, setVisitData] = useState({ rating: 5, memo: '' });
   const [saving, setSaving] = useState(false);
+  const [bookmarkGroups, setBookmarkGroups] = useState<BookmarkGroup[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<string>('');
+  const [newGroupName, setNewGroupName] = useState('');
   const { restaurants, loading, error, searchByRegion, searchByCategory } = useRestaurants();
   const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      loadBookmarkGroups();
+    }
+  }, [user]);
+
+  const loadBookmarkGroups = async () => {
+    if (!user) return;
+    try {
+      console.log('📚 북마크 그룹 로딩 중... userId:', user.uid);
+      const groups = await bookmarkService.getBookmarkGroups(user.uid);
+      console.log('✅ 북마크 그룹:', groups);
+      setBookmarkGroups(groups);
+    } catch (err) {
+      console.error('❌ 북마크 그룹 로딩 실패:', err);
+    }
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,9 +57,13 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
     }
   };
 
-  const handleRestaurantClick = (restaurant: Restaurant) => {
+  const handleRestaurantClick = (restaurant: Restaurant, action: 'visit' | 'bookmark') => {
     setSelectedRestaurant(restaurant);
-    setShowVisitModal(true);
+    if (action === 'visit') {
+      setShowVisitModal(true);
+    } else {
+      setShowBookmarkModal(true);
+    }
     onSelect?.(restaurant);
   };
 
@@ -61,6 +89,58 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
     } catch (err) {
       console.error('방문 기록 저장 실패:', err);
       alert('방문 기록 저장에 실패했습니다.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAddBookmark = async () => {
+    if (!user || !selectedRestaurant) return;
+
+    let groupId = selectedGroupId;
+
+    // 새 그룹 만들기
+    if (newGroupName.trim()) {
+      setSaving(true);
+      try {
+        groupId = await bookmarkService.createBookmarkGroup({
+          userId: user.uid,
+          groupName: newGroupName,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+        await loadBookmarkGroups();
+        setNewGroupName('');
+      } catch (err) {
+        console.error('그룹 생성 실패:', err);
+        alert('그룹 생성에 실패했습니다.');
+        setSaving(false);
+        return;
+      }
+    }
+
+    if (!groupId) {
+      alert('그룹을 선택하거나 새 그룹을 만들어주세요.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await bookmarkService.addBookmark({
+        userId: user.uid,
+        groupId,
+        restaurantId: selectedRestaurant.id,
+        restaurantName: selectedRestaurant.name,
+        restaurantAddress: selectedRestaurant.address,
+        createdAt: new Date()
+      });
+
+      alert('북마크에 추가되었습니다!');
+      setShowBookmarkModal(false);
+      setSelectedGroupId('');
+    } catch (err) {
+      console.error('북마크 추가 실패:', err);
+      alert('북마크 추가에 실패했습니다.');
     } finally {
       setSaving(false);
     }
@@ -120,8 +200,7 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
           {restaurants.map((restaurant) => (
             <div
               key={restaurant.id}
-              className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
-              onClick={() => handleRestaurantClick(restaurant)}
+              className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow"
             >
               <div className="card-body">
                 <h3 className="card-title">{restaurant.name}</h3>
@@ -140,6 +219,20 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
                 {restaurant.businessHours && (
                   <p className="text-sm text-base-content/60">🕐 {restaurant.businessHours}</p>
                 )}
+                <div className="card-actions justify-end mt-4">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => handleRestaurantClick(restaurant, 'visit')}
+                  >
+                    ✓ 방문 기록
+                  </button>
+                  <button
+                    className="btn btn-sm btn-secondary"
+                    onClick={() => handleRestaurantClick(restaurant, 'bookmark')}
+                  >
+                    ★ 북마크
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -214,6 +307,75 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
             </div>
           </div>
           <div className="modal-backdrop" onClick={() => setShowVisitModal(false)} />
+        </div>
+      )}
+
+      {/* 북마크 추가 모달 */}
+      {showBookmarkModal && selectedRestaurant && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg mb-4">북마크에 추가</h3>
+            
+            <div className="mb-4">
+              <p className="font-semibold">{selectedRestaurant.name}</p>
+              <p className="text-sm text-base-content/60">{selectedRestaurant.address}</p>
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text">기존 그룹 선택</span>
+              </label>
+              <select
+                className="select select-bordered"
+                value={selectedGroupId}
+                onChange={(e) => setSelectedGroupId(e.target.value)}
+              >
+                <option value="">그룹 선택...</option>
+                {bookmarkGroups.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.groupName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="divider">또는</div>
+
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text">새 그룹 만들기</span>
+              </label>
+              <input
+                type="text"
+                className="input input-bordered"
+                placeholder="예: 가고싶은 맛집, 점심 맛집..."
+                value={newGroupName}
+                onChange={(e) => setNewGroupName(e.target.value)}
+              />
+            </div>
+
+            <div className="modal-action">
+              <button
+                className="btn"
+                onClick={() => {
+                  setShowBookmarkModal(false);
+                  setSelectedGroupId('');
+                  setNewGroupName('');
+                }}
+                disabled={saving}
+              >
+                취소
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleAddBookmark}
+                disabled={saving || (!selectedGroupId && !newGroupName.trim())}
+              >
+                {saving ? '추가 중...' : '추가'}
+              </button>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={() => setShowBookmarkModal(false)} />
         </div>
       )}
     </div>
