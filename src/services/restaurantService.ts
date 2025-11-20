@@ -6,16 +6,18 @@ import {
   getDocs,
   getDoc,
   doc,
-  Timestamp
+  Timestamp,
+  writeBatch
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import type { Restaurant } from '../types';
 
 const COLLECTION_NAME = 'restaurants';
+const SYNC_METADATA_COLLECTION = 'sync_metadata';
 
 export const restaurantService = {
   async cacheRestaurant(restaurant: Restaurant): Promise<string> {
-    const existing = await this.findByExternalId(restaurant.id);
+    const existing = await this.findByExternalId(restaurant.externalId || restaurant.id);
     if (existing) {
       return existing.id!;
     }
@@ -27,19 +29,78 @@ export const restaurantService = {
     return docRef.id;
   },
 
+  async bulkCacheRestaurants(restaurants: Restaurant[]): Promise<number> {
+    const batch = writeBatch(db);
+    let count = 0;
+    
+    for (const restaurant of restaurants) {
+      const existing = await this.findByExternalId(restaurant.externalId || restaurant.id);
+      if (!existing) {
+        const docRef = doc(collection(db, COLLECTION_NAME));
+        batch.set(docRef, {
+          ...restaurant,
+          cachedAt: Timestamp.now()
+        });
+        count++;
+        
+        if (count % 500 === 0) {
+          await batch.commit();
+        }
+      }
+    }
+    
+    if (count % 500 !== 0) {
+      await batch.commit();
+    }
+    
+    return count;
+  },
+
+  async updateSyncMetadata(): Promise<void> {
+    await addDoc(collection(db, SYNC_METADATA_COLLECTION), {
+      syncedAt: Timestamp.now(),
+      type: 'daegu_food_api'
+    });
+  },
+
+  async getLastSyncTime(): Promise<Date | null> {
+    const q = query(
+      collection(db, SYNC_METADATA_COLLECTION),
+      where('type', '==', 'daegu_food_api')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) return null;
+    
+    const docs = querySnapshot.docs
+      .map(doc => doc.data())
+      .sort((a, b) => b.syncedAt.toMillis() - a.syncedAt.toMillis());
+    
+    if (docs.length === 0) return null;
+    return docs[0].syncedAt.toDate();
+  },
+
+  async shouldSync(): Promise<boolean> {
+    const lastSync = await this.getLastSyncTime();
+    if (!lastSync) return true;
+    
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    return Date.now() - lastSync.getTime() > oneWeek;
+  },
+
   async findByExternalId(externalId: string): Promise<Restaurant | null> {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('id', '==', externalId)
+      where('externalId', '==', externalId)
     );
     const querySnapshot = await getDocs(q);
     
     if (querySnapshot.empty) return null;
     
-    const doc = querySnapshot.docs[0];
+    const docData = querySnapshot.docs[0];
     return {
-      id: doc.id,
-      ...doc.data()
+      id: docData.id,
+      ...docData.data()
     } as Restaurant;
   },
 
@@ -77,5 +138,13 @@ export const restaurantService = {
       id: docSnap.id,
       ...docSnap.data()
     } as Restaurant;
+  },
+
+  async getAllRestaurants(): Promise<Restaurant[]> {
+    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as Restaurant));
   }
 };

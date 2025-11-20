@@ -29,7 +29,7 @@ export interface DaeguFoodResponse {
 export const daeguFoodService = {
   async searchByRegion(region: string): Promise<DaeguFoodItem[]> {
     try {
-      const url = `https://www.daegufood.go.kr/kor/api/tasty.html?mode=json&addr=${encodeURIComponent(region)}`;
+      const url = `/api/daegu?mode=json&addr=${encodeURIComponent(region)}`;
       const response = await fetch(url);
       
       if (!response.ok) {
