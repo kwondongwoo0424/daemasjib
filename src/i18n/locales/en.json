@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "Daemasjib",
+    "subtitle": "Record your favorite restaurants"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Login",
+    "registerButton": "Sign Up",
+    "loggingIn": "Logging in...",
+    "registering": "Signing up...",
+    "loginWithGoogle": "Login with Google",
+    "logout": "Logout",
+    "errors": {
+      "loginFailed": "Login failed",
+      "registerFailed": "Sign up failed",
+      "passwordMismatch": "Passwords do not match",
+      "emailRequired": "Please enter your email",
+      "passwordRequired": "Please enter your password"
+    }
+  },
+  "home": {
+    "visits": {
+      "title": "Visit History",
+      "description": "Record and manage your restaurant visits"
+    },
+    "bookmarks": {
+      "title": "Bookmarks",
+      "description": "Bookmark restaurants you want to visit"
+    },
+    "restaurants": {
+      "title": "Restaurant Search",
+      "description": "Discover new restaurants"
+    },
+    "goButton": "Go"
+  },
+  "visits": {
+    "title": "Visit History",
+    "noVisits": "No visits yet",
+    "addVisit": "Add Visit",
+    "loading": "Loading visits...",
+    "error": "Failed to load visits"
+  },
+  "bookmarks": {
+    "title": "Bookmarks",
+    "noBookmarks": "No bookmarks yet",
+    "addBookmark": "Add Bookmark",
+    "loading": "Loading bookmarks...",
+    "error": "Failed to load bookmarks"
+  },
+  "restaurants": {
+    "title": "Restaurant Search",
+    "search": "Search",
+    "searchPlaceholder": "Enter restaurant name",
+    "noResults": "No results found",
+    "loading": "Searching...",
+    "error": "Search failed"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "retry": "Retry"
+  }
+}

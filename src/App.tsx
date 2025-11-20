@@ -1,14 +1,13 @@
-import './App.css'
+import { BrowserRouter } from 'react-router-dom';
+import Router from './app/routes/router';
+import './i18n/config';
 
 function App() {
-
   return (
-    <>
-      <div>
-        main
-      </div>
-    </>
-  )
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
