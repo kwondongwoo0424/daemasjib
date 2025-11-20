@@ -1,15 +1,21 @@
+import { useEffect } from 'react';
 import { useAuth } from '../../features/auth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../../shared/ui';
 
 export const HomePage = () => {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  if (!user) {
-    navigate('/auth');
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth', { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading || !user) {
     return null;
   }
 

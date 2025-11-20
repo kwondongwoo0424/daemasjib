@@ -14,7 +14,7 @@ export const LoginForm = () => {
     try {
       await login(email, password);
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('[LoginForm] Login failed:', err);
     }
   };
 

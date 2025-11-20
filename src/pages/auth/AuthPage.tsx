@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LoginForm, RegisterForm } from '../../features/auth';
+import { LoginForm, RegisterForm, useAuth } from '../../features/auth';
 import { LanguageSwitcher } from '../../shared/ui';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const { t } = useTranslation();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/', { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">

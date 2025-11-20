@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../features/auth';
@@ -5,12 +6,17 @@ import { RestaurantSearch } from '../../features/restaurant';
 import { LanguageSwitcher } from '../../shared/ui';
 
 export const RestaurantsPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  if (!user) {
-    navigate('/auth');
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth', { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading || !user) {
     return null;
   }
 

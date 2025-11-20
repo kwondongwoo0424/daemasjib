@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../features/auth';
@@ -6,13 +6,18 @@ import { VisitList, CreateVisitForm } from '../../features/visit';
 import { LanguageSwitcher } from '../../shared/ui';
 
 export const VisitsPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const { t } = useTranslation();
 
-  if (!user) {
-    navigate('/auth');
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth', { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading || !user) {
     return null;
   }
 

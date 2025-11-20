@@ -12,7 +12,9 @@ export const useAuth = () => {
       setUser(user);
       setLoading(false);
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const register = async (email: string, password: string) => {
@@ -36,6 +38,7 @@ export const useAuth = () => {
       const user = await authService.loginWithEmail(email, password);
       return user;
     } catch (err: any) {
+      console.error('[useAuth] Login error:', err);
       setError(err.message);
       throw err;
     } finally {
