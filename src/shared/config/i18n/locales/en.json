@@ -65,7 +65,9 @@
     "addBookmark": "Add Bookmark",
     "loading": "Loading bookmarks...",
     "error": "Failed to load bookmarks",
-    "loginMessage": "Please login to manage your bookmarks."
+    "loginMessage": "Please login to manage your bookmarks.",
+    "removeBookmark": "Remove Bookmark",
+    "exploreRestaurants": "Explore Restaurants"
   },
   "restaurants": {
     "title": "Restaurant Search",
@@ -95,19 +97,23 @@
     "visitUpdateFailed": "Failed to update visit",
     "visitRemoved": "Visit removed successfully",
     "visitRemoveFailed": "Failed to remove visit",
-    "visitLoadFailed": "Failed to load restaurant information",
+    "visitLoadFailed": "Failed to load visit history",
     "bookmarkAdded": "Bookmark added successfully",
     "bookmarkRemoved": "Bookmark removed successfully",
+    "bookmarkRemoveFailed": "Failed to remove bookmark",
+    "bookmarkLoadFailed": "Failed to load bookmarks",
     "bookmarkFailed": "Failed to process bookmark",
     "restaurantLoadFailed": "Failed to load restaurant information"
   },
   "visitModal": {
+    "addTitle": "Add Visit",
     "editTitle": "Edit Visit",
     "restaurant": "Restaurant",
     "rating": "Rating",
     "memo": "Memo (Optional)",
     "memoPlaceholder": "Leave a note about this restaurant...",
-    "update": "Update"
+    "update": "Update",
+    "add": "Add"
   },
   "restaurantDetail": {
     "back": "Back",

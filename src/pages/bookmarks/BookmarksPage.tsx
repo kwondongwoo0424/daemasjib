@@ -31,7 +31,7 @@ export const BookmarksPage = () => {
         setBookmarks(restaurants.filter((r: any) => r !== null) as Restaurant[]);
       } catch (error) {
         console.error('Failed to load bookmarks:', error);
-        toast.error('북마크를 불러올 수 없습니다');
+        toast.error(t('toast.bookmarkLoadFailed'));
       } finally {
         setLoading(false);
       }
@@ -51,11 +51,11 @@ export const BookmarksPage = () => {
       if (bookmark?.id) {
         await bookmarkService.deleteBookmark(bookmark.id);
         setBookmarks(prev => prev.filter(r => r.id !== restaurantId));
-        toast.success('북마크가 제거되었습니다');
+        toast.success(t('toast.bookmarkRemoved'));
       }
     } catch (error) {
       console.error('Failed to remove bookmark:', error);
-      toast.error('북마크 제거에 실패했습니다');
+      toast.error(t('toast.bookmarkRemoveFailed'));
     }
   };
 
@@ -114,7 +114,7 @@ export const BookmarksPage = () => {
               onClick={() => navigate('/')}
               className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
             >
-              맛집 탐색하기
+              {t('bookmarks.exploreRestaurants')}
             </button>
           </div>
         ) : (
@@ -155,7 +155,7 @@ export const BookmarksPage = () => {
                     className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors text-sm font-medium"
                   >
                     <Trash2 className="w-4 h-4" />
-                    북마크 제거
+                    {t('bookmarks.removeBookmark')}
                   </button>
                 </div>
               </div>

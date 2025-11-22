@@ -305,7 +305,7 @@ export const VisitsPage = () => {
             <div className="mb-6">
               <label className="block text-sm text-gray-500 mb-2">{t('visitModal.memo')}</label>
               <textarea
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none text-gray-900"
                 rows={4}
                 placeholder={t('visitModal.memoPlaceholder')}
                 value={editMemo}

@@ -497,10 +497,10 @@ export const HomePage = () => {
                     } else {
                       // 기본 그룹 찾기 또는 생성
                       let groups = await bookmarkService.getBookmarkGroups(user.uid);
-                      let defaultGroup = groups.find(g => g.groupName === '기본');
+                      let defaultGroup = groups.find(g => g.groupName === t('bookmarks.title'));
 
                       if (!defaultGroup) {
-                        const groupId = await bookmarkService.createGroup(user.uid, '기본');
+                        const groupId = await bookmarkService.createGroup(user.uid, t('bookmarks.title'));
                         groups = await bookmarkService.getBookmarkGroups(user.uid);
                         defaultGroup = groups.find(g => g.id === groupId);
                       }
@@ -540,7 +540,7 @@ export const HomePage = () => {
         >
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">방문 기록 추가</h3>
+              <h3 className="text-xl font-bold text-gray-800">{t('visitModal.addTitle')}</h3>
               <button
                 onClick={() => {
                   setIsVisitModalOpen(false);
@@ -554,12 +554,12 @@ export const HomePage = () => {
             </div>
 
             <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-1">식당</p>
+              <p className="text-sm text-gray-500 mb-1">{t('visitModal.restaurant')}</p>
               <p className="text-gray-800 font-medium">{selectedRestaurant.name}</p>
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm text-gray-500 mb-2">별점</label>
+              <label className="block text-sm text-gray-500 mb-2">{t('visitModal.rating')}</label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -577,11 +577,11 @@ export const HomePage = () => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm text-gray-500 mb-2">메모 (선택)</label>
+              <label className="block text-sm text-gray-500 mb-2">{t('visitModal.memo')}</label>
               <textarea
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none text-gray-900"
                 rows={4}
-                placeholder="이 식당에 대한 메모를 남겨보세요..."
+                placeholder={t('visitModal.memoPlaceholder')}
                 value={visitMemo}
                 onChange={(e) => setVisitMemo(e.target.value)}
               />
@@ -596,7 +596,7 @@ export const HomePage = () => {
                 }}
                 className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium"
               >
-                취소
+                {t('common.cancel')}
               </button>
               <button
                 onClick={async () => {
@@ -623,7 +623,7 @@ export const HomePage = () => {
                 }}
                 className="flex-1 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors font-medium"
               >
-                추가하기
+                {t('visitModal.add')}
               </button>
             </div>
           </div>
