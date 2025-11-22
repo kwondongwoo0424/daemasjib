@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useRestaurants } from '../model/useRestaurants';
-import { useAuth } from '../../auth';
-import { visitService } from '../../../services/visitService';
-import { bookmarkService } from '../../../services/bookmarkService';
-import type { Restaurant } from '../../../types';
-import type { BookmarkGroup } from '../../../types';
+import { useNavigate } from 'react-router-dom';
+import { useRestaurants } from '@/entities/restaurant';
+import { useAuth } from '@/entities/user';
+import { visitService } from '@/entities/visit/api/visitService';
+import { bookmarkService } from '@/entities/bookmark/api/bookmarkService';
+import type { Restaurant } from '@/shared/types';
+import type { BookmarkGroup } from '@/shared/types';
 
 interface RestaurantSearchProps {
   onSelect?: (restaurant: Restaurant) => void;
@@ -16,6 +17,8 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showVisitModal, setShowVisitModal] = useState(false);
   const [showBookmarkModal, setShowBookmarkModal] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [loginPromptAction, setLoginPromptAction] = useState<'visit' | 'bookmark'>('visit');
   const [visitData, setVisitData] = useState({ rating: 5, memo: '' });
   const [saving, setSaving] = useState(false);
   const [bookmarkGroups, setBookmarkGroups] = useState<BookmarkGroup[]>([]);
@@ -23,6 +26,7 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
   const [newGroupName, setNewGroupName] = useState('');
   const { restaurants, loading, error, searchByRegion, searchByCategory } = useRestaurants();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -33,9 +37,7 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
   const loadBookmarkGroups = async () => {
     if (!user) return;
     try {
-      console.log('📚 북마크 그룹 로딩 중... userId:', user.uid);
       const groups = await bookmarkService.getBookmarkGroups(user.uid);
-      console.log('✅ 북마크 그룹:', groups);
       setBookmarkGroups(groups);
     } catch (err) {
       console.error('❌ 북마크 그룹 로딩 실패:', err);
@@ -59,6 +61,13 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
 
   const handleRestaurantClick = (restaurant: Restaurant, action: 'visit' | 'bookmark') => {
     setSelectedRestaurant(restaurant);
+
+    if (!user) {
+      setLoginPromptAction(action);
+      setShowLoginPrompt(true);
+      return;
+    }
+
     if (action === 'visit') {
       setShowVisitModal(true);
     } else {
@@ -78,9 +87,7 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
         restaurantName: selectedRestaurant.name,
         visitedAt: new Date(),
         rating: visitData.rating,
-        memo: visitData.memo,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        memo: visitData.memo
       });
 
       alert('방문 기록이 저장되었습니다!');
@@ -376,6 +383,45 @@ export const RestaurantSearch = ({ onSelect }: RestaurantSearchProps) => {
             </div>
           </div>
           <div className="modal-backdrop" onClick={() => setShowBookmarkModal(false)} />
+        </div>
+      )}
+
+      {/* 로그인 필요 안내 모달 */}
+      {showLoginPrompt && selectedRestaurant && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg mb-4">로그인이 필요합니다</h3>
+
+            <div className="mb-4">
+              <p className="font-semibold">{selectedRestaurant.name}</p>
+              <p className="text-sm text-base-content/60">{selectedRestaurant.address}</p>
+            </div>
+
+            <p className="mb-6">
+              {loginPromptAction === 'visit'
+                ? '방문 기록을 저장하려면 로그인이 필요합니다.'
+                : '북마크에 추가하려면 로그인이 필요합니다.'}
+            </p>
+
+            <div className="modal-action">
+              <button
+                className="btn"
+                onClick={() => {
+                  setShowLoginPrompt(false);
+                  setSelectedRestaurant(null);
+                }}
+              >
+                취소
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate('/auth')}
+              >
+                로그인하기
+              </button>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={() => setShowLoginPrompt(false)} />
         </div>
       )}
     </div>
