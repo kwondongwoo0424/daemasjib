@@ -1,5 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* 스크롤바가 나타나도 레이아웃이 밀리지 않도록 설정 */
+html {
+  overflow-y: scroll;
+}
+
 .material-icons {
   font-family: "Material Icons";
   display: inline-block;
