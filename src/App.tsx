@@ -1,8 +1,10 @@
 import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import Router from './app/routes/router';
-import './i18n/config';
-import { syncService } from './services/syncService';
+import '@/shared/config/i18n/config';
+import { syncService } from '@/shared/api/syncService';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const syncedRef = useRef(false);
@@ -15,10 +17,7 @@ function App() {
     // 앱 시작 시 자동으로 동기화 체크
     const autoSync = async () => {
       try {
-        const { synced, result } = await syncService.syncIfNeeded();
-        if (synced && result) {
-          console.log(`✅ 자동 동기화 완료: 전체 ${result.total}개, 신규 ${result.new}개`);
-        }
+        await syncService.syncIfNeeded();
       } catch (error) {
         console.error('자동 동기화 실패:', error);
       }
@@ -30,6 +29,18 @@ function App() {
   return (
     <BrowserRouter>
       <Router />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </BrowserRouter>
   );
 }
