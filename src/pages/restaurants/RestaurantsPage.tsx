@@ -1,24 +1,11 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../features/auth';
-import { RestaurantSearch } from '../../features/restaurant';
-import { LanguageSwitcher } from '../../shared/ui';
+import { RestaurantSearch } from '@/features/restaurant';
+import { LanguageSwitcher } from '@/shared/ui';
 
 export const RestaurantsPage = () => {
-  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth', { replace: true });
-    }
-  }, [user, loading, navigate]);
-
-  if (loading || !user) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-base-200">
