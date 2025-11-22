@@ -1,0 +1,123 @@
+{
+  "app": {
+    "title": "대맛집",
+    "subtitle": "나만의 맛집을 기록하세요"
+  },
+  "auth": {
+    "login": "로그인",
+    "register": "회원가입",
+    "email": "이메일",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "loginButton": "로그인",
+    "registerButton": "회원가입",
+    "loggingIn": "로그인 중...",
+    "registering": "회원가입 중...",
+    "logout": "로그아웃",
+    "loginRequired": "로그인이 필요합니다",
+    "errors": {
+      "loginFailed": "로그인에 실패했습니다",
+      "registerFailed": "회원가입에 실패했습니다",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다",
+      "emailRequired": "이메일을 입력해주세요",
+      "passwordRequired": "비밀번호를 입력해주세요"
+    }
+  },
+  "home": {
+    "title": "홈",
+    "searchPlaceholder": "가게 이름으로 검색...",
+    "region": "지역",
+    "category": "음식 카테고리",
+    "totalRestaurants": "총 {{count}}개의 맛집",
+    "noResults": "검색 결과가 없습니다",
+    "visitRecord": "방문 기록",
+    "bookmarks": "북마크",
+    "close": "닫기",
+    "categoryLabel": "카테고리",
+    "address": "주소",
+    "phone": "전화번호",
+    "businessHours": "영업시간",
+    "menu": "메뉴",
+    "description": "설명",
+    "addVisit": "방문 기록",
+    "addBookmark": "북마크",
+    "visits": {
+      "title": "방문 기록",
+      "description": "내가 방문한 맛집들을 기록하고 관리하세요"
+    },
+    "restaurants": {
+      "title": "식당 검색",
+      "description": "새로운 맛집을 찾아보세요"
+    },
+    "goButton": "이동"
+  },
+  "visits": {
+    "title": "방문 기록",
+    "noVisits": "아직 방문 기록이 없습니다",
+    "addVisit": "방문 기록 추가",
+    "loading": "방문 기록을 불러오는 중...",
+    "error": "방문 기록을 불러오는데 실패했습니다",
+    "loginMessage": "방문 기록을 관리하려면 로그인이 필요합니다."
+  },
+  "bookmarks": {
+    "title": "북마크",
+    "noBookmarks": "아직 북마크가 없습니다",
+    "addBookmark": "북마크 추가",
+    "loading": "북마크를 불러오는 중...",
+    "error": "북마크를 불러오는데 실패했습니다",
+    "loginMessage": "북마크를 관리하려면 로그인이 필요합니다."
+  },
+  "restaurants": {
+    "title": "식당 검색",
+    "search": "검색",
+    "searchPlaceholder": "식당 이름을 입력하세요",
+    "noResults": "검색 결과가 없습니다",
+    "loading": "검색 중...",
+    "error": "검색에 실패했습니다"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "success": "성공했습니다",
+    "cancel": "취소",
+    "confirm": "확인",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "수정",
+    "back": "뒤로",
+    "retry": "재시도"
+  },
+  "toast": {
+    "loginRequired": "로그인이 필요한 기능입니다",
+    "visitAdded": "방문 기록이 추가되었습니다",
+    "visitAddFailed": "방문 기록 추가에 실패했습니다",
+    "visitUpdated": "방문 기록이 수정되었습니다",
+    "visitUpdateFailed": "방문 기록 수정에 실패했습니다",
+    "visitRemoved": "방문 기록이 제거되었습니다",
+    "visitRemoveFailed": "방문 기록 제거에 실패했습니다",
+    "visitLoadFailed": "방문 기록을 불러올 수 없습니다",
+    "bookmarkAdded": "북마크가 추가되었습니다",
+    "bookmarkRemoved": "북마크가 제거되었습니다",
+    "bookmarkFailed": "북마크 처리에 실패했습니다",
+    "restaurantLoadFailed": "식당 정보를 불러올 수 없습니다"
+  },
+  "visitModal": {
+    "editTitle": "방문 기록 수정",
+    "restaurant": "식당",
+    "rating": "별점",
+    "memo": "메모 (선택)",
+    "memoPlaceholder": "이 식당에 대한 메모를 남겨보세요...",
+    "update": "수정하기"
+  },
+  "restaurantDetail": {
+    "back": "뒤로가기",
+    "category": "카테고리",
+    "address": "주소",
+    "phone": "전화번호",
+    "businessHours": "영업시간",
+    "menu": "메뉴",
+    "description": "설명",
+    "addVisit": "방문 기록",
+    "bookmark": "북마크"
+  }
+}

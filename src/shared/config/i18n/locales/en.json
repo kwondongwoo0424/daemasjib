@@ -1,0 +1,123 @@
+{
+  "app": {
+    "title": "Daemasjib",
+    "subtitle": "Record your favorite restaurants"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Login",
+    "registerButton": "Sign Up",
+    "loggingIn": "Logging in...",
+    "registering": "Signing up...",
+    "logout": "Logout",
+    "loginRequired": "Login Required",
+    "errors": {
+      "loginFailed": "Login failed",
+      "registerFailed": "Sign up failed",
+      "passwordMismatch": "Passwords do not match",
+      "emailRequired": "Please enter your email",
+      "passwordRequired": "Please enter your password"
+    }
+  },
+  "home": {
+    "title": "Home",
+    "searchPlaceholder": "Search by restaurant name...",
+    "region": "Region",
+    "category": "Food Category",
+    "totalRestaurants": "Total {{count}} restaurants",
+    "noResults": "No results found",
+    "visitRecord": "Visit History",
+    "bookmarks": "Bookmarks",
+    "close": "Close",
+    "categoryLabel": "Category",
+    "address": "Address",
+    "phone": "Phone",
+    "businessHours": "Business Hours",
+    "menu": "Menu",
+    "description": "Description",
+    "addVisit": "Add Visit",
+    "addBookmark": "Bookmark",
+    "visits": {
+      "title": "Visit History",
+      "description": "Record and manage your restaurant visits"
+    },
+    "restaurants": {
+      "title": "Restaurant Search",
+      "description": "Discover new restaurants"
+    },
+    "goButton": "Go"
+  },
+  "visits": {
+    "title": "Visit History",
+    "noVisits": "No visits yet",
+    "addVisit": "Add Visit",
+    "loading": "Loading visits...",
+    "error": "Failed to load visits",
+    "loginMessage": "Please login to manage your visit history."
+  },
+  "bookmarks": {
+    "title": "Bookmarks",
+    "noBookmarks": "No bookmarks yet",
+    "addBookmark": "Add Bookmark",
+    "loading": "Loading bookmarks...",
+    "error": "Failed to load bookmarks",
+    "loginMessage": "Please login to manage your bookmarks."
+  },
+  "restaurants": {
+    "title": "Restaurant Search",
+    "search": "Search",
+    "searchPlaceholder": "Enter restaurant name",
+    "noResults": "No results found",
+    "loading": "Searching...",
+    "error": "Search failed"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "retry": "Retry"
+  },
+  "toast": {
+    "loginRequired": "Login required",
+    "visitAdded": "Visit added successfully",
+    "visitAddFailed": "Failed to add visit",
+    "visitUpdated": "Visit updated successfully",
+    "visitUpdateFailed": "Failed to update visit",
+    "visitRemoved": "Visit removed successfully",
+    "visitRemoveFailed": "Failed to remove visit",
+    "visitLoadFailed": "Failed to load restaurant information",
+    "bookmarkAdded": "Bookmark added successfully",
+    "bookmarkRemoved": "Bookmark removed successfully",
+    "bookmarkFailed": "Failed to process bookmark",
+    "restaurantLoadFailed": "Failed to load restaurant information"
+  },
+  "visitModal": {
+    "editTitle": "Edit Visit",
+    "restaurant": "Restaurant",
+    "rating": "Rating",
+    "memo": "Memo (Optional)",
+    "memoPlaceholder": "Leave a note about this restaurant...",
+    "update": "Update"
+  },
+  "restaurantDetail": {
+    "back": "Back",
+    "category": "Category",
+    "address": "Address",
+    "phone": "Phone",
+    "businessHours": "Business Hours",
+    "menu": "Menu",
+    "description": "Description",
+    "addVisit": "Add Visit",
+    "bookmark": "Bookmark"
+  }
+}
