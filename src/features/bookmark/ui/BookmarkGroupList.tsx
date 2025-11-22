@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBookmarkGroups } from '../model/useBookmarks';
+import { useBookmarkGroups } from '@/entities/bookmark';
 
 interface BookmarkGroupListProps {
   userId: string;

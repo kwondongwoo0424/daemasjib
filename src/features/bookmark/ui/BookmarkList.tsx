@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBookmarks } from '../model/useBookmarks';
+import { useBookmarks } from '@/entities/bookmark';
 
 interface BookmarkListProps {
   userId: string;
