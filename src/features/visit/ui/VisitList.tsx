@@ -1,5 +1,5 @@
-import { useVisits } from '../model/useVisits';
-import type { Visit } from '../../../types';
+import { useVisits } from '@/entities/visit';
+import type { Visit } from '@/shared/types';
 
 interface VisitListProps {
   userId: string;

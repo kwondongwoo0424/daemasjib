@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useVisits } from '../model/useVisits';
+import { useVisits } from '@/entities/visit';
 
 interface CreateVisitFormProps {
   userId: string;
