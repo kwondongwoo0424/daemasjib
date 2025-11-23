@@ -70,7 +70,7 @@ export const AuthPage = () => {
             onClick={() => navigate('/')}
             className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
           >
-            ← 홈으로 돌아가기
+            {t('auth.backToHome')}
           </button>
         </div>
       </div>

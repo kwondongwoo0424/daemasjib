@@ -15,6 +15,7 @@
     "registering": "회원가입 중...",
     "logout": "로그아웃",
     "loginRequired": "로그인이 필요합니다",
+    "backToHome": "← 홈으로 돌아가기",
     "errors": {
       "loginFailed": "로그인에 실패했습니다",
       "registerFailed": "회원가입에 실패했습니다",

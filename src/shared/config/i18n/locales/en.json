@@ -15,6 +15,7 @@
     "registering": "Signing up...",
     "logout": "Logout",
     "loginRequired": "Login Required",
+    "backToHome": "← Back to Home",
     "errors": {
       "loginFailed": "Login failed",
       "registerFailed": "Sign up failed",
