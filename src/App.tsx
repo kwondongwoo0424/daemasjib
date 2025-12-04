@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from "react-router-dom";
 import { useEffect, useRef } from 'react';
 import Router from './app/routes/router';
 import '@/shared/config/i18n/config';
@@ -27,7 +27,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Router />
       <ToastContainer
         position="top-right"
@@ -41,7 +41,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
